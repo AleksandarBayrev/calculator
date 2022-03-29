@@ -6,10 +6,15 @@ import { Calculator } from './Calculator';
 import { NumberValidator } from './services/NumberValidator';
 import { OperationsValidator } from './services/OperationsValidator';
 import { SpecialsValidator } from './services/SpecialsValidator';
+import { RenderHelpers } from './services/RenderHelpers';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Calculator numberValidator={new NumberValidator} operationsValidator={new OperationsValidator} specialsValidator={new SpecialsValidator} />
+    <Calculator
+      numberValidator={new NumberValidator}
+      operationsValidator={new OperationsValidator}
+      specialsValidator={new SpecialsValidator}
+      renderHelpers={new RenderHelpers} />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,16 +1,16 @@
 import React from 'react';
 import './Calculator.css';
-import { ClearButton } from './components/ClearButton';
-import { NumberButton } from './components/NumberButton';
 import { Result } from './components/Result';
 import { INumberValidator } from './types/INumberValidator';
 import { IOperationsValidator } from './types/IOperationsValidator';
+import { IRenderHelpers } from './types/IRenderHelpers';
 import { ISpecialsValidator } from './types/ISpecialsValidator';
 
 export type CalculatorProps = {
     numberValidator: INumberValidator;
     operationsValidator: IOperationsValidator;
     specialsValidator: ISpecialsValidator;
+    renderHelpers: IRenderHelpers;
 }
 
 export type CalculatorState = {
@@ -23,33 +23,6 @@ export class Calculator extends React.Component<CalculatorProps, CalculatorState
         this.state = {
             value: ''
         };
-    }
-
-    private renderRow(baseId: string, values: string[], clickHandler: React.MouseEventHandler<HTMLButtonElement>) {
-        const columns: JSX.Element[] = [];
-        for (let i = 0; i < values.length; i++) {
-            columns.push(<NumberButton buttonDomId={`button-${values[i]}`} value={values[i]} clickHandler={clickHandler} />)
-        }
-        return (
-            <div className={`row-${baseId}`}>
-                {columns.map(x => x)}
-            </div>
-        );
-    }
-
-    private renderMathOperations(baseId: string, clickHandler: React.MouseEventHandler<HTMLButtonElement>, evalClickHandler: React.MouseEventHandler<HTMLButtonElement>, clearClickHandler: React.MouseEventHandler<HTMLButtonElement>) {
-        const values: string[] = ['+', '-', '*', '/'];
-        const columns: JSX.Element[] = [];
-        for (let i = 0; i < values.length; i++) {
-            columns.push(<NumberButton buttonDomId={`button-${values[i]}`} value={values[i]} clickHandler={clickHandler} />)
-        }
-        columns.push(<NumberButton buttonDomId={'button-='} value={'='} clickHandler={evalClickHandler} />)
-        columns.push(<ClearButton buttonDomId={'button-clear'} clickHandler={clearClickHandler} />)
-        return (
-            <div className={`row-${baseId}`}>
-                {columns.map(x => x)}
-            </div>
-        );
     }
 
     private addToValue = (valueToAdd: string) => {
@@ -119,10 +92,10 @@ export class Calculator extends React.Component<CalculatorProps, CalculatorState
             <div className={'content'}>
                 <div className={'text-white text-large'}>Hello</div>
                 <div className={'keyboard'}>
-                    {this.renderRow('1', ['0', '1', '2', '3'], (e) => this.addToValue(((e.target) as any).innerText))}
-                    {this.renderRow('2', ['4', '5', '6', '7'], (e) => this.addToValue(((e.target) as any).innerText))}
-                    {this.renderRow('3', ['8', '9', '.'], (e) => this.addToValue(((e.target) as any).innerText))}
-                    {this.renderMathOperations('4', (e) => this.addToValue(((e.target) as any).innerText), (e) => this.evaluate(), () => this.clear())}
+                    {this.props.renderHelpers.renderRow('1', ['0', '1', '2', '3'], (e) => this.addToValue(((e.target) as any).innerText))}
+                    {this.props.renderHelpers.renderRow('2', ['4', '5', '6', '7'], (e) => this.addToValue(((e.target) as any).innerText))}
+                    {this.props.renderHelpers.renderRow('3', ['8', '9', '.'], (e) => this.addToValue(((e.target) as any).innerText))}
+                    {this.props.renderHelpers.renderMathOperations('4', (e) => this.addToValue(((e.target) as any).innerText), (e) => this.evaluate(), () => this.clear())}
                     <Result value={this.state.value} />
                 </div>
             </div>
